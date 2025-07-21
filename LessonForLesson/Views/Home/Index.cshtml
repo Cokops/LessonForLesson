@@ -1,0 +1,27 @@
+﻿@model List<LessonForLesson.Data.DataForDB>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>Данные из базы данных</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Индетификатор</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model)
+        {
+            <tr>
+                <td>@data.id</td>
+                <td>@data.name</td>
+                <td>@data.number.ToString()</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
