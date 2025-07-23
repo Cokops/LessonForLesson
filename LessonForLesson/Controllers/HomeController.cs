@@ -15,9 +15,19 @@ namespace LessonForLesson.Controllers
             _mongo = mongo;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(int pageSize = 15, int pageNumber = 1)
         {
-            var data= _mongo.Data.Find(p => true).ToList();
+            pageSize = Math.Clamp(pageSize, 1, 200);
+            pageNumber = Math.Max(1, pageNumber);
+
+            var data = _mongo.Data.Find(d => true).Skip((pageNumber - 1) * pageSize).Limit(pageSize).ToList();
+
+            var totalCount = _mongo.Data.CountDocuments(d => true);
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = pageSize;
+
             return View(data);
         }
 
